@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Auswahl</title>
+<style type="text/css">
+body {
+	font-family: Arial, Verdana, sans-serif;
+}
+#content {
+	width: 90%;
+	min-width: 540px;
+	border: 1px solid #006695;
+	border-radius: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+</style>
+
+<script src="jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+function save(field) {
+	var url = "save.php";
+	var xmlhttp;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==1) {
+		  $("#content").html("<p align='center'>Einen Moment bitte. Ihre Auswahl wird gespeichert...</p>");
+	  }
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			//got something
+			switch(xmlhttp.responseText) {
+				case "success": 
+					$("#content").html("<p align='center'>Vielen Dank für Ihre Teilnahme!<br/>Sie können die Seite nun verlassen.</p>");
+					break;
+				case "exists": 
+					$("#content").html("<p align='center'>Leider können Sie nur einmal teilnehmen, trotzdem vielen Dank!</p>");
+					break;
+				default:
+					$("#content").html("<p align='center'>Leider ist ein Fehler aufgetreten. Versuchen Sie es doch einfach noch einmal. Vielen Dank!</p>");
+			}
+		}
+	  }
+	xmlhttp.open("POST",url,true); // send request
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send("f="+parseInt(field));
+}
+</script>
+
+</head>
+
+<body>
+<div id="content">
+<p style="font-size: larger; font-weight: bold;">Willkommen</p>
+<p><span style="font-style: normal; font-weight: normal;">Vielen Dank für Ihr Interesse an dieser Voruntersuchung.</span><br>
+  Sie besteht nur aus einer einzigen Aufgabe.</p>
+<p style="font-weight: bold">Die folgende Grafik wird Ihnen und einem weiteren zufällig ausgewählten Teilnehmer gezeigt. <br>
+  Sie  haben beide das gleiche Ziel: Wählen Sie das gleiche Feld aus wie der jeweils andere Teilnehmer!<br>
+</p>
+<p>Bitte klicken Sie nun eins der Felder an, um Ihre Auswahl zu treffen. Sie können sich so viel Zeit nehmen, wie Sie möchten.</p>
+<p align="center"><img src="pie.png" alt="" width="538" height="538" usemap="#Map"/>
+  <map name="Map">
+    <area shape="poly" coords="25,189,43,149,63,117,90,86,114,66,139,49,165,36,195,24,223,18,244,16,267,13,267,268" href="javascript:save(1);" alt="feld1">
+    <area shape="poly" coords="268,268,267,13,308,16,349,27,386,42,419,63,452,92,482,130,499,160,510,191" href="javascript:save(2)" alt="feld2">
+    <area shape="poly" coords="269,270,510,192,520,233,522,276,517,318,505,359,489,394,466,427,442,453,418,473" href="javascript:save(3)" alt="feld3">
+    <area shape="poly" coords="268,272,416,476,379,497,343,512,304,521,266,523,223,519,175,506,141,490,119,475" href="javascript:save(4);" alt="feld4">
+    <area shape="poly" coords="25,191,266,270,118,474,91,453,66,425,44,391,28,357,17,318,12,275,14,233" href="javascript:save(5);" alt="feld5">
+  </map>
+</p>
+</div>
+</body>
+</html>
